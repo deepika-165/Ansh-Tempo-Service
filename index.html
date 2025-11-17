@@ -233,18 +233,22 @@
     <div class="row">
       <div class="col-md-6">
         <form id="contactForm" action="https://formspree.io/f/mblqrzra" method="POST" novalidate>
+          <!-- Name Field -->
           <div class="mb-3">
             <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" required>
             <small class="text-danger" id="nameError"></small>
           </div>
+
+          <!-- Email Field -->
           <div class="mb-3">
             <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" required>
-            <small class="text-danger" id="emailError"></small>
           </div>
+
+          <!-- Message Field -->
           <div class="mb-3">
             <textarea name="message" id="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
-            <small class="text-danger" id="messageError"></small>
           </div>
+
           <button type="submit" class="btn btn-danger w-100">Submit Inquiry</button>
         </form>
       </div>
@@ -254,47 +258,39 @@
   <script>
     const form = document.getElementById('contactForm');
     const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
-
     const nameError = document.getElementById('nameError');
-    const emailError = document.getElementById('emailError');
-    const messageError = document.getElementById('messageError');
 
+    // Real-time validation as user types
+    nameInput.addEventListener('input', function() {
+      const value = nameInput.value.trim();
+      const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+
+      if (value.length < 2) {
+        nameError.textContent = 'Name must be at least 2 characters long.';
+      } else if (!nameRegex.test(value)) {
+        nameError.textContent = 'Name can only contain letters and spaces.';
+      } else {
+        nameError.textContent = ''; // Clear error
+      }
+    });
+
+    // Validation on form submit
     form.addEventListener('submit', function(e) {
-      let valid = true;
-
-      // Reset error messages
-      nameError.textContent = '';
-      emailError.textContent = '';
-      messageError.textContent = '';
-
-      // Name validation
-      if (nameInput.value.trim().length < 2) {
-        nameError.textContent = 'Please enter a valid name (at least 2 characters).';
-        valid = false;
-      }
-
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(emailInput.value.trim())) {
-        emailError.textContent = 'Please enter a valid email address.';
-        valid = false;
-      }
-
-      // Message validation
-      if (messageInput.value.trim().length < 10) {
-        messageError.textContent = 'Please enter a message of at least 10 characters.';
-        valid = false;
-      }
-
-      // Prevent form submission if invalid
-      if (!valid) {
+      const value = nameInput.value.trim();
+      const nameRegex = /^[A-Za-z\s]+$/;
+      if (value.length < 2 || !nameRegex.test(value)) {
+        // If invalid, prevent submission
         e.preventDefault();
+        if (value.length < 2) {
+          nameError.textContent = 'Name must be at least 2 characters long.';
+        } else {
+          nameError.textContent = 'Name can only contain letters and spaces.';
+        }
       }
     });
   </script>
 </section>
+
 
       <div class="col-md-6">
             <!-- Replace with actual Google Maps iframe -->
@@ -392,5 +388,6 @@
 
 </body>
 </html>
+
 
 
