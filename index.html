@@ -232,15 +232,18 @@
     <h2 class="text-center mb-4">Contact Us</h2>
     <div class="row">
       <div class="col-md-6">
-        <form id="contactForm" action="https://formspree.io/f/mblqrzra" method="POST">
+        <form id="contactForm" action="https://formspree.io/f/mblqrzra" method="POST" novalidate>
           <div class="mb-3">
             <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" required>
+            <small class="text-danger" id="nameError"></small>
           </div>
           <div class="mb-3">
             <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" required>
+            <small class="text-danger" id="emailError"></small>
           </div>
           <div class="mb-3">
             <textarea name="message" id="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
+            <small class="text-danger" id="messageError"></small>
           </div>
           <button type="submit" class="btn btn-danger w-100">Submit Inquiry</button>
         </form>
@@ -250,39 +253,49 @@
 
   <script>
     const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
 
     form.addEventListener('submit', function(e) {
-      // Get input values
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
+      let valid = true;
 
-      // Simple regex for email validation
+      // Reset error messages
+      nameError.textContent = '';
+      emailError.textContent = '';
+      messageError.textContent = '';
+
+      // Name validation
+      if (nameInput.value.trim().length < 2) {
+        nameError.textContent = 'Please enter a valid name (at least 2 characters).';
+        valid = false;
+      }
+
+      // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      // Validation checks
-      if (name.length < 2) {
-        alert('Please enter a valid name (at least 2 characters).');
-        e.preventDefault();
-        return;
+      if (!emailRegex.test(emailInput.value.trim())) {
+        emailError.textContent = 'Please enter a valid email address.';
+        valid = false;
       }
 
-      if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address.');
-        e.preventDefault();
-        return;
+      // Message validation
+      if (messageInput.value.trim().length < 10) {
+        messageError.textContent = 'Please enter a message of at least 10 characters.';
+        valid = false;
       }
 
-      if (message.length < 10) {
-        alert('Please enter a message of at least 10 characters.');
+      // Prevent form submission if invalid
+      if (!valid) {
         e.preventDefault();
-        return;
       }
-
-      // Form will submit if all validations pass
     });
   </script>
 </section>
+
       <div class="col-md-6">
             <!-- Replace with actual Google Maps iframe -->
             <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
@@ -379,4 +392,5 @@
 
 </body>
 </html>
+
 
