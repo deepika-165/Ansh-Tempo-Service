@@ -226,31 +226,33 @@
 
 
     
-    <!-- Contact -->
+  <!-- Contact -->
 <section id="contact">
   <div class="container">
     <h2 class="text-center mb-4">Contact Us</h2>
     <div class="row">
+      <!-- Form Column -->
       <div class="col-md-6">
         <form id="contactForm" action="https://formspree.io/f/mblqrzra" method="POST" novalidate>
-          <!-- Name Field -->
           <div class="mb-3">
-            <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" required>
-            <small class="text-danger" id="nameError"></small>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
+            <small id="nameError" class="text-danger"></small>
           </div>
-
-          <!-- Email Field -->
           <div class="mb-3">
-            <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" required>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required>
+            <small id="emailError" class="text-danger"></small>
           </div>
-
-          <!-- Message Field -->
           <div class="mb-3">
-            <textarea name="message" id="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
+            <textarea name="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
           </div>
-
           <button type="submit" class="btn btn-danger w-100">Submit Inquiry</button>
         </form>
+      </div>
+
+      <!-- Map Column -->
+      <div class="col-md-6">
+        <!-- Replace with actual Google Maps iframe -->
+        <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
   </div>
@@ -258,67 +260,103 @@
   <script>
     const form = document.getElementById('contactForm');
     const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
     const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
 
-    // Real-time validation as user types
-    nameInput.addEventListener('input', function() {
-      const value = nameInput.value.trim();
-      const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+    form.addEventListener('submit', function(event) {
+      let valid = true;
 
-      if (value.length < 2) {
-        nameError.textContent = 'Name must be at least 2 characters long.';
-      } else if (!nameRegex.test(value)) {
-        nameError.textContent = 'Name can only contain letters and spaces.';
+      // Name Validation: no digits allowed
+      if (/\d/.test(nameInput.value)) {
+        nameError.textContent = "Name cannot contain numbers.";
+        valid = false;
       } else {
-        nameError.textContent = ''; // Clear error
+        nameError.textContent = "";
       }
-    });
 
-    // Validation on form submit
-    form.addEventListener('submit', function(e) {
-      const value = nameInput.value.trim();
-      const nameRegex = /^[A-Za-z\s]+$/;
-      if (value.length < 2 || !nameRegex.test(value)) {
-        // If invalid, prevent submission
-        e.preventDefault();
-        if (value.length < 2) {
-          nameError.textContent = 'Name must be at least 2 characters long.';
-        } else {
-          nameError.textContent = 'Name can only contain letters and spaces.';
-        }
+      // Email Validation: must include "@" and a basic format check
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailInput.value)) {
+        emailError.textContent = "Please enter a valid email address.";
+        valid = false;
+      } else {
+        emailError.textContent = "";
+      }
+
+      if (!valid) {
+        event.preventDefault(); // prevent form submission if invalid
       }
     });
   </script>
 </section>
 
 
-      <div class="col-md-6">
-            <!-- Replace with actual Google Maps iframe -->
-            <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-          </div>
-        </div>
+<!-- Quote -->
+<section id="quote" class="bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Request a Quote</h2>
+    <form id="quoteForm" action="https://formspree.io/f/mwpaerkb" method="POST" class="mx-auto" style="max-width: 600px;" novalidate>
+      <div class="mb-3">
+        <input type="text" class="form-control" id="company" name="company" placeholder="Company Name" required />
+        <small id="companyError" class="text-danger"></small>
       </div>
-    </section>
-
-    <!-- Quote -->
-    <section id="quote" class="bg-light">
-      <div class="container">
-        <h2 class="text-center mb-4">Request a Quote</h2>
-        <form action="https://formspree.io/f/mwpaerkb" method="POST" class="mx-auto" style="max-width: 600px;">
-            <div class="mb-3">
-                <input type="text" class="form-control" name="company" placeholder="Company Name" required />
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control" name="material" placeholder="Material (e.g., copper, steel)" required />
-            </div>
-            <div class="mb-3">
-                <input type="number" class="form-control" name="quantity" placeholder="Quantity (tons)" required />
-            </div>
-            <button type="submit" class="btn btn-danger w-100">Get Estimate</button>
-        </form>
-
+      <div class="mb-3">
+        <input type="text" class="form-control" id="material" name="material" placeholder="Material (e.g., copper, steel)" required />
+        <small id="materialError" class="text-danger"></small>
       </div>
-    </section>
+      <div class="mb-3">
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity (tons)" required />
+        <small id="quantityError" class="text-danger"></small>
+      </div>
+      <button type="submit" class="btn btn-danger w-100">Get Estimate</button>
+    </form>
+  </div>
+
+  <script>
+    const quoteForm = document.getElementById('quoteForm');
+    const companyInput = document.getElementById('company');
+    const materialInput = document.getElementById('material');
+    const quantityInput = document.getElementById('quantity');
+
+    const companyError = document.getElementById('companyError');
+    const materialError = document.getElementById('materialError');
+    const quantityError = document.getElementById('quantityError');
+
+    quoteForm.addEventListener('submit', function(event) {
+      let valid = true;
+
+      // Company Name: no digits
+      if (/\d/.test(companyInput.value)) {
+        companyError.textContent = "Company name cannot contain numbers.";
+        valid = false;
+      } else {
+        companyError.textContent = "";
+      }
+
+      // Material: no digits
+      if (/\d/.test(materialInput.value)) {
+        materialError.textContent = "Material name cannot contain numbers.";
+        valid = false;
+      } else {
+        materialError.textContent = "";
+      }
+
+      // Quantity: must be positive
+      if (quantityInput.value <= 0) {
+        quantityError.textContent = "Quantity must be greater than 0.";
+        valid = false;
+      } else {
+        quantityError.textContent = "";
+      }
+
+      if (!valid) {
+        event.preventDefault(); // prevent form submission if invalid
+      }
+    });
+  </script>
+</section>
+
   </main>
 
   <!-- Footer -->
@@ -388,6 +426,3 @@
 
 </body>
 </html>
-
-
-
